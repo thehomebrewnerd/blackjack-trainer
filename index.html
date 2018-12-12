@@ -1,0 +1,79 @@
+<!doctype html>
+<html class="no-js" lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Play and Learn Blackjack</title>
+    <link rel="stylesheet" href="css/foundation.css">
+    <link rel="stylesheet" href="css/app.css">
+  </head>
+  <body>
+    <div class="grid-container">
+      <div class="grid-x grid-padding-x">
+        <div class="large-12 cell">
+          <h1>Play and Learn Blackjack!</h1>
+        </div>
+      </div>
+
+      <div class="grid-x grid-padding-x">
+        <div class="large-8 medium-8 cell">
+          <div class="grid-x grid-padding-x">
+            <div class="large-12 cell" id="gameCell">
+              <canvas id="gameArea" width="500"></canvas>
+            </div>
+          </div>
+
+          <div class="grid-x grid-padding-x">
+            <div class="large-2 cell">
+              <button type="button" class="button expanded" disabled>Deal</button>
+            </div>
+            <div class="large-2 cell">
+              <button type="button" class="success button expanded" disabled>Hit</button>
+            </div>
+            <div class="large-2 cell">
+              <button type="button" class="alert button expanded" disabled>Stand</button>
+            </div>
+            <div class="large-2 cell">
+              <button type="button" class="warning button expanded" disabled>Double</button>
+            </div>
+            <div class="large-2 cell">
+              <button type="button" class="warning button expanded" disabled>Split</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="large-4 medium-4 cell">
+          <form>
+            <div class="grid-x grid-padding-x">
+              <div class="large-12 cell">
+                <label>Initial Bankroll</label>
+                <div class="input-group">
+                  <span class="input-group-label">$</span>
+                  <input class="input-group-field" type="number" placeholder="1000" value="1000" id="bankroll" />
+                </div>
+              </div>
+            </div>
+            <div class="grid-x grid-padding-x">
+              <div class="large-12 cell">
+                <label>Number of Decks</label>
+                <input type="text" placeholder="6" value="6" id="numDecks" />
+              </div>
+            </div>
+            <div class="grid-x grid-padding-x">
+              <div class="large-12 cell">
+                <button type="button" class="success button expanded" id="startButton">Start/Reset Game</button>
+                <button type="button" class="alert button expanded" disabled>Quit Game</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <script src="js/vendor/jquery.js"></script>
+    <script src="js/vendor/what-input.js"></script>
+    <script src="js/vendor/foundation.js"></script>
+    <script src="js/app.js"></script>
+  </body>
+</html>

@@ -63,6 +63,22 @@ class Hand {
         }
         return false;
     }
+
+    canSplit() {
+        if (this.cards.length === 2) {
+            if (this.cards[0].rank === this.cards[1].rank) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    isBusted() {
+        if (this.score > 21) {
+            return true;
+        }
+        return false;
+    }
 }
 
 class Shoe {
@@ -108,49 +124,128 @@ class Shoe {
     }
 }
 
-function resizeCanvas(canvas) {
+function resizeCanvas(canvas, ctx) {
     let width = document.getElementById("gameCell").getBoundingClientRect().width * 0.95;
     let height = width * 0.6
     canvas.width = width;
     canvas.height = height;
+    ctx.fillStyle = "#292";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+}
+
+function drawScreen () {
+    resizeCanvas(canvas, ctx);
+    ctx.fillStyle = "#fff";
+    ctx.font = `20px Arial`;
+    ctx.textAlign = "left";
+    ctx.fillText("Dealer: " + dealerHand.logHand(), 100, 40)
+    ctx.fillText("Dealer Score: " + dealerHand.score, 100, 65)
+    ctx.fillText("Player: " + playerHand.logHand(), 100, 100)
+    ctx.fillText("Player Score: " + playerHand.score, 100, 125)
 }
 
 function startGame() {
     bankroll = $("#bankroll").val();
     numDecks = $("#numDecks").val();
+    betAmount = $("#betAmount").val();
     shoe = new Shoe(numDecks);
     shoe.shuffle();
+    drawNewHands();
+}
+
+function drawNewHands() {
+    betAmount = $("#betAmount").val();
+    bankroll -= betAmount
+    $("#currentBankroll").text("$" + bankroll)
     dealerHand = new Hand();
     playerHand = new Hand();
     playerHand.addCard(shoe.drawCard());
     dealerHand.addCard(shoe.drawCard());
     playerHand.addCard(shoe.drawCard());
     dealerHand.addCard(shoe.drawCard());
-    console.log(dealerHand.score, playerHand.score)
-    ctx.fillStyle = "#fff";
-    ctx.font = `20px Arial`;
-    ctx.textAlign = "center";
-    ctx.fillText("Dealer: " + dealerHand.logHand(), 100, 40)
-    ctx.fillText("Player: " + playerHand.logHand(), 100, 100)
+    drawScreen();
+
+    $("#hitButton").attr("disabled", false);
+    $("#standButton").attr("disabled", false);
+    $("#doubleButton").attr("disabled", false);
+    if (playerHand.canSplit()) {
+        $("#splitButton").attr("disabled", false);
+    }
+}
+
+function finishGame() {
+    if (dealerHand.isBusted()) {
+        alert("Player Wins")
+        bankroll += 2*betAmount;
+    } else if (dealerHand.score === playerHand.score) {
+        alert("Push");
+        bankroll += betAmount;
+    } else if (dealerHand.score > playerHand.score || playerHand.isBusted()) {
+        alert("Dealer Wins");
+    } else {
+        alert("Player Wins");
+        bankroll += 2*betAmount;
+    }
+    $("#newHandButton").attr("disabled", false);
+    $("#currentBankroll").text("$" + bankroll)
+}
+
+function doubleDown () {
+    $("#doubleButton").attr("disabled", true);
+    $("#splitButton").attr("disabled", true);
+    $("#hitButton").attr("disabled", true);
+    $("#standButton").attr("disabled", true);
+    bankroll -= betAmount;
+    $("#currentBankroll").text("$" + bankroll)
+    playerHand.addCard(shoe.drawCard());
+    drawScreen();
+    finishDealerHand();
 }
 
 function finishDealerHand() {
     // Finish Dealer play if Player doesn't bust
     while (dealerHand.score < 17 || (dealerHand.isSoft())) {
-        dealerHand.addCard(shoe.drawCard());
-    }
-    console.log("Dealer Final Score", dealerHand.score);
-    dealerHand.logHand();
+            dealerHand.addCard(shoe.drawCard());
+            drawScreen();
+        }
+    finishGame();
 }
 
-$("#startButton").click( function () {
+$("#startButton").click(function () {
     startGame();
 });
 
-var bankroll, numDecks, shoe, dealerHand, playerHand;
+$("#doubleButton").click(function () {
+    doubleDown();
+});
+
+$("#newHandButton").click(function () {
+    $("#newHandButton").attr("disabled", true);
+    drawNewHands();
+});
+
+$("#hitButton").click(function () {
+    playerHand.addCard(shoe.drawCard());
+    $("#doubleButton").attr("disabled", true);
+    $("#splitButton").attr("disabled", true);
+    drawScreen();
+    if (playerHand.isBusted()) {
+        finishGame();
+    }
+});
+
+$("#standButton").click(function () {
+    finishDealerHand();
+    $("#doubleButton").attr("disabled", true);
+    $("#splitButton").attr("disabled", true);
+    $("#hitButton").attr("disabled", true);
+    $("#standButton").attr("disabled", true);
+});
+
+var bankroll, numDecks, shoe, dealerHand, playerHand, betAmount;
 
 let canvas = document.getElementById('gameArea');
-resizeCanvas(canvas);
 let ctx = canvas.getContext('2d');
-ctx.fillStyle = "#292";
-ctx.fillRect(0, 0, canvas.width, canvas.height);
+resizeCanvas(canvas, ctx);
+
+

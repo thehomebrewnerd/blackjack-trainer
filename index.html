@@ -26,19 +26,19 @@
 
           <div class="grid-x grid-padding-x">
             <div class="large-2 cell">
-              <button type="button" class="button expanded" disabled>Deal</button>
+              <button type="button" class="button expanded" id ="newHandButton" disabled>New Hand</button>
             </div>
             <div class="large-2 cell">
-              <button type="button" class="success button expanded" disabled>Hit</button>
+              <button type="button" class="success button expanded" id="hitButton" disabled>Hit</button>
             </div>
             <div class="large-2 cell">
-              <button type="button" class="alert button expanded" disabled>Stand</button>
+              <button type="button" class="alert button expanded" id="standButton" disabled>Stand</button>
             </div>
             <div class="large-2 cell">
-              <button type="button" class="warning button expanded" disabled>Double</button>
+              <button type="button" class="warning button expanded" id="doubleButton" disabled>Double</button>
             </div>
             <div class="large-2 cell">
-              <button type="button" class="warning button expanded" disabled>Split</button>
+              <button type="button" class="warning button expanded" id="splitButton" disabled>Split</button>
             </div>
           </div>
         </div>
@@ -47,10 +47,19 @@
           <form>
             <div class="grid-x grid-padding-x">
               <div class="large-12 cell">
-                <label>Initial Bankroll</label>
+                <label>Starting Bankroll</label>
                 <div class="input-group">
                   <span class="input-group-label">$</span>
                   <input class="input-group-field" type="number" placeholder="1000" value="1000" id="bankroll" />
+                </div>
+              </div>
+            </div>
+            <div class="grid-x grid-padding-x">
+              <div class="large-12 cell">
+                <label>Bet Amount</label>
+                <div class="input-group">
+                  <span class="input-group-label">$</span>
+                  <input class="input-group-field" type="number" placeholder="10" value="10" id="betAmount" />
                 </div>
               </div>
             </div>
@@ -63,7 +72,11 @@
             <div class="grid-x grid-padding-x">
               <div class="large-12 cell">
                 <button type="button" class="success button expanded" id="startButton">Start/Reset Game</button>
-                <button type="button" class="alert button expanded" disabled>Quit Game</button>
+              </div>
+            </div>
+            <div class="grid-x grid-padding-x">
+              <div class="large-12 cell callout">
+                <p>Current Bankroll: <span id="currentBankroll">$1000</span></p>
               </div>
             </div>
           </form>
